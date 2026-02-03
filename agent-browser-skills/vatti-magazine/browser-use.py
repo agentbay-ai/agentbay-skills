@@ -29,6 +29,7 @@ async def main():
         raise RuntimeError(f"Failed to create session: {session_result.error_message}")
 
     session = session_result.session
+    print(f"asp流化链接: {session.resource_url}")
     agent = session.agent
 
     max_try_times = int(os.environ.get("AGENT_TASK_TIMEOUT", 200))
