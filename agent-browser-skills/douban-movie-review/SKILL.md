@@ -54,3 +54,4 @@ python browser-use.py " \
 - 始终注明信息来源为豆瓣
 - 不需要创建新的脚本，用skill目录下的browseer-use.py
 - 任务需要执行1~2分钟，不要杀进程，请耐心等待和观察任务
+- skill调用后，控制台会打印出asp流化链接（可视化的url），请你告知用户
