@@ -70,3 +70,4 @@ python browser-use.py " \
 - 始终注明信息来源为太平洋电脑网
 - 不需要创建新的脚本，用skill目录下的browser-use.py
 - 如果产品页面加载较慢，请耐心等待
+- skill调用后，控制台会打印出asp流化链接（可视化的url），可告知用户查看

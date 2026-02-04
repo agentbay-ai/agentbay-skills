@@ -16,7 +16,7 @@ async def main():
     # 添加参数
     parser.add_argument('task', help='任务描述')  # 位置参数（必需）
     args = parser.parse_args()
-    api_key = "akm-bea8f36f-7bcb-4f13-9e95-d3ba5dea5fd5"
+    api_key = os.environ["AGENTBAY_API_KEY"]
     if not api_key:
         raise RuntimeError("AGENTBAY_API_KEY environment variable not set")
 

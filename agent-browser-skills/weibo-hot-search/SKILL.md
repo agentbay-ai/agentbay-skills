@@ -65,3 +65,4 @@ python browser-use.py " \
 - 不需要创建新的脚本，用skill目录下的browser-use.py
 - 如果页面加载较慢，请耐心等待
 - 热度数值可能实时变化，以抓取时刻为准
+- skill调用后，控制台会打印出asp流化链接（可视化的url），可告知用户查看
