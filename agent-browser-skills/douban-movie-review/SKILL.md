@@ -30,11 +30,11 @@ python browser-use.py "<任务执行步骤>"
 
 ## 快速示例
 python browser-use.py " \
-1. 前往豆瓣网站https://m.douban.com/home_guide \
+1. 前往豆瓣网站https://www.douban.com/ \
 2. 搜索电影盗梦空间 \
 3. 点击盗梦空间进入详情界面,下滑到短评部分 \
 4. 提取前5条热门评论 \
-5. 以markdown格式返回 \
+5. 以markdown格式返回 
 "
 
 
@@ -53,5 +53,5 @@ python browser-use.py " \
 
 - 始终注明信息来源为豆瓣
 - 不需要创建新的脚本，用skill目录下的browseer-use.py
-- 任务需要执行1~2分钟，不要杀进程，请耐心等待和观察任务
+- 任务需要执行1~2分钟，不要杀进程，请耐心等待和观察任务，也不要重试
 - skill调用后，控制台会打印出asp流化链接（可视化的url），可告知用户查看

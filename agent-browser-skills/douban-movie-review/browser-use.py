@@ -40,7 +40,7 @@ async def main():
     max_try_times = int(os.environ.get("AGENT_TASK_TIMEOUT", 200))
 
     print(f"🚀 Executing task: {args.task}")
-    result = agent.browser.execute_task(args.task)
+    result = agent.browser.execute_task(args.task, use_vision=True)
 
     if not result.success:
         raise RuntimeError(f"Task execution failed: {result.error_message}")
