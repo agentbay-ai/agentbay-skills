@@ -7,18 +7,39 @@ from agentbay import CreateSessionParams
 
 import asyncio
 
+def get_api_key():
+    from pathlib import Path
+    file_path = Path.home() / ".config" / "agentbay" / "api_key"
+    file_path.parent.mkdir(parents=True, exist_ok=True)
+    if not file_path.exists():
+        file_path.touch()
+    if os.environ.get("AGENTBAY_API_KEY"):
+        with open(file_path, "w", encoding="utf-8") as f:
+            f.write(os.environ.get("AGENTBAY_API_KEY"))
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            api_key = f.read().strip()
+        if not api_key:
+            api_key = None
+    except Exception as e:
+        api_key = None
+    return api_key
 async def main():
     import argparse
 
 # 创建解析器
-    parser = argparse.ArgumentParser(description='任务描述')
+    parser = argparse.ArgumentParser(description='wuying-browser-use')
 
     # 添加参数
     parser.add_argument('task', help='任务描述')  # 位置参数（必需）
     args = parser.parse_args()
-    api_key = os.environ["AGENTBAY_API_KEY"]
+    
+    api_key = get_api_key()
     if not api_key:
-        raise RuntimeError("AGENTBAY_API_KEY environment variable not set")
+        raise RuntimeError(
+            "AGENTBAY_API_KEY environment variable is not set. "
+            "Please visit https://agentbay.console.aliyun.com/service-management to obtain your API key."
+        )
 
     agent_bay = AgentBay(api_key=api_key)
 
@@ -35,7 +56,7 @@ async def main():
     max_try_times = int(os.environ.get("AGENT_TASK_TIMEOUT", 200))
 
     print(f"🚀 Executing task: {args.task}")
-    result = agent.browser.execute_task(args.task,use_vision=True)
+    result = agent.browser.execute_task(args.task, use_vision=True)
 
     if not result.success:
         raise RuntimeError(f"Task execution failed: {result.error_message}")
@@ -48,6 +69,7 @@ async def main():
         query_result = agent.browser.get_task_status(result.task_id)
         if not query_result.success:
             raise RuntimeError(f"Task status check failed: {query_result.error_message}")
+
         print(
             f"⏳ Task {query_result.task_id} status: {query_result.task_status}, "
             f"action: {query_result.task_action}"
