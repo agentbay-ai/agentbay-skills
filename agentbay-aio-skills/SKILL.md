@@ -26,19 +26,19 @@ pip install wuying-agentbay-sdk
 
 ## API key configuration
 
-To use this skill, you need an AgentBay API key. Create a config file so the skill can load your key when the agent runs. The script looks for the key in this file (paths vary by OS):
+The **end user** (the human) must have an AgentBay API key and create a config file on their machine so that when you (the agent) run the script, the script can load the key. The script looks for the key in this file (paths vary by OS):
 
 - **macOS / Linux**: `~/.config/agentbay/api_key` (or `$XDG_CONFIG_HOME/agentbay/api_key` if set)
 - **Windows**: `%APPDATA%\agentbay\api_key`
 
-Example (macOS/Linux):
+Tell the user to run (macOS/Linux):
 
 ```bash
 mkdir -p ~/.config/agentbay
 echo -n 'your_AgentBay_API_Key' > ~/.config/agentbay/api_key
 ```
 
-On Windows, create the folder `%APPDATA%\agentbay` and save your key into a file named `api_key` (no extension) in that folder.
+On Windows, the user creates the folder `%APPDATA%\agentbay` and saves their key into a file named `api_key` (no extension) in that folder.
 
 If the script fails with "Missing API key" or similar, do not only echo the error. Tell the user that the AgentBay API key is not configured and guide them to create the config file above (e.g. run the two commands with their key), then retry.
 
