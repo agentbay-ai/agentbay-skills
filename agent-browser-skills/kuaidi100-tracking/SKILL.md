@@ -25,14 +25,14 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ### 示例1: 查询快递单号(需要手机尾号验证)
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往快递100官方网站 https://www.kuaidi100.com/ \
 2. 等待页面加载完成,确认查询输入框显示正常 \
 3. 定位'快递单号'输入框(通常有'请输入快递单号'提示文字) \
@@ -49,7 +49,7 @@ python browser-use.py " \
 
 ### 示例2: 查询快递单号(简化版)
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 访问快递100官网 https://www.kuaidi100.com/ \
 2. 在搜索框中输入快递单号'SF1234567890' \
 3. 如果需要手机尾号验证,输入'5678' \
@@ -62,7 +62,7 @@ python browser-use.py " \
 ### 示例3: 查询多个快递单号(需要分别执行)
 ```bash
 # 第一个单号
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 打开快递100网站 https://www.kuaidi100.com/ \
 2. 输入快递单号'JD0987654321098' \
 3. 输入手机尾号'8888' \
@@ -70,7 +70,7 @@ python browser-use.py " \
 "
 
 # 第二个单号(需要重新执行)
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 打开快递100网站 https://www.kuaidi100.com/ \
 2. 输入快递单号'YTO0011223344556' \
 3. 输入手机尾号'6666' \

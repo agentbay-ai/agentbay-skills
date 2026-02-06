@@ -25,13 +25,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往arXiv官网 https://arxiv.org/ \
 2. 等待页面完全加载 \
 3. 在页面右上角的搜索框中输入'deep learning' \

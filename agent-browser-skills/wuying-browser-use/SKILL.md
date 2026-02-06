@@ -11,23 +11,23 @@ allowed-tools: Bash(*)
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
 # 访问网站
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 
 # 搜索信息
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 
 # 提取数据
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 
 # 填写表单
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 功能特性
@@ -43,17 +43,17 @@ python browser-use.py "<任务执行步骤>"
 
 ### 电商信息收集
 ```bash
-python browser-use.py "<任务执行步骤>" "访问京东搜索iPhone，提取前5个商品价格"
+python scripts/browser-use.py "<任务执行步骤>" "访问京东搜索iPhone，提取前5个商品价格"
 ```
 
 ### 新闻监控
 ```bash
-python browser-use.py "<任务执行步骤>" "打开新浪新闻，获取今日头条"
+python scripts/browser-use.py "<任务执行步骤>" "打开新浪新闻，获取今日头条"
 ```
 
 ### 社交媒体
 ```bash
-python browser-use.py "<任务执行步骤>" "访问微博热搜榜，提取前10个话题"
+python scripts/browser-use.py "<任务执行步骤>" "访问微博热搜榜，提取前10个话题"
 ```
 
 ## 使用技巧

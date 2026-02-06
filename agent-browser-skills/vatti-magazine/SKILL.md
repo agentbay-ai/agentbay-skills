@@ -24,13 +24,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往华帝官网 https://www.vatti.com.cn/ \
 2. 等待页面完全加载 \
 3. 鼠标悬停在'华帝品牌'菜单,开启下拉栏选项 \
