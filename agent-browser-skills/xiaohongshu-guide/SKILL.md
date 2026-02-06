@@ -25,14 +25,14 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ### 示例1：搜索旅游攻略
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往小红书网站 https://www.xiaohongshu.com/ \
 2. 在搜索框中输入'成都旅游攻略' \
 3. 点击搜索按钮进行搜索 \
@@ -44,7 +44,7 @@ python browser-use.py " \
 
 ### 示例2：搜索美食攻略
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 访问小红书 https://www.xiaohongshu.com/ \
 2. 搜索'上海网红餐厅' \
 3. 筛选点赞数超过1000的笔记 \
@@ -55,7 +55,7 @@ python browser-use.py " \
 
 ### 示例3：搜索穿搭攻略
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 打开小红书网站 https://www.xiaohongshu.com/ \
 2. 搜索'春季穿搭攻略' \
 3. 按最新排序查看笔记 \

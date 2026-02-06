@@ -24,13 +24,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往飞利浦中国官网 https://www.philips.com.cn/ \
 2. 等待页面完全加载 \
 3. 滚动到页面底部 \

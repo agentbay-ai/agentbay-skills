@@ -24,13 +24,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往太平洋电脑网 https://www.pconline.com.cn/ \
 2. 在搜索框中搜索 iPhone 17 \
 3. 点击进入 iPhone 17 产品详情页面 \

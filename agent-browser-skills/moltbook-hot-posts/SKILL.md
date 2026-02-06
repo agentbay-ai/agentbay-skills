@@ -24,14 +24,14 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ### 示例1：查询今日热帖Top 1
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 进入Moltbook网站 https://www.moltbook.com/ \
 2. 下滑页面到Posts区域 \
 3. 将Posts顶栏中的时间设置为Today，筛选设置为Top（每次进入帖子前都要重新设置） \
@@ -42,7 +42,7 @@ python browser-use.py " \
 
 ### 示例2：查询本周热帖Top 1
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 访问 https://www.moltbook.com/ \
 2. 滚动到Posts区域 \
 3. 设置时间为This Week，筛选为Top（每次进入帖子前都要重新设置） \
@@ -53,7 +53,7 @@ python browser-use.py " \
 
 ### 示例3：查询最新帖子
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 打开 https://www.moltbook.com/ \
 2. 找到Posts区域 \
 3. 设置筛选为New（每次进入帖子前都要重新设置） \

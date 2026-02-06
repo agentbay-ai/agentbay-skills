@@ -25,13 +25,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往安居客网站 https://www.anjuke.com/ \
 2. 等待页面完全加载 \
 3. 鼠标悬停在地图标志上,开启下拉选项 \

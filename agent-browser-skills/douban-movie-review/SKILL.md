@@ -24,12 +24,12 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python browser-use.py "<任务执行步骤>"
+python scripts/browser-use.py "<任务执行步骤>"
 
 ```
 
 ## 快速示例
-python browser-use.py " \
+python scripts/browser-use.py " \
 1. 前往豆瓣网站https://www.douban.com/ \
 2. 搜索电影盗梦空间 \
 3. 点击盗梦空间进入详情界面,下滑到短评部分 \
