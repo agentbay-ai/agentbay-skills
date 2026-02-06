@@ -1,9 +1,50 @@
 ---
 name: agentbay-aio-skills
-description: Use the AgentBay SDK to create a code_latest session in an agentbay sandbox, run code via run_code, and return results. Use when executing Python/JavaScript/R/Java in an isolated sandbox and reading outputs/logs/errors.
+description: Use this skill for any request to run, execute, or evaluate code (e.g. run this code, execute script, plot with Python, 跑代码/画图/执行脚本). No need for user to say "sandbox". Create code_latest session via AgentBay SDK, run_code, return results. Python, JavaScript, R, Java.
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # AgentBay AIO Skills
+
+## Trigger: when to invoke this skill
+
+Invoke this skill whenever the user intends to **run or execute code**, even if they do **not** say "sandbox" or "沙箱". Typical phrases (trigger on these):
+
+- **English**: "run this code", "execute this script", "run the code", "execute the script", "plot with Python", "draw a graph", "evaluate this snippet", "what's the output of this code", "can you run this".
+- **中文**: "帮我跑一下这段代码", "运行这段代码", "执行这个脚本", "用 Python 画个图", "跑一下", "看下运行结果", "执行一下", "帮我运行".
+
+Do **not** require the user to mention "sandbox" or "沙箱". If the request is clearly about running/executing code, use this skill by default.
+
+## Dependencies
+
+This skill depends on the **wuying-agentbay-sdk** package. Install it before use:
+
+```bash
+pip install wuying-agentbay-sdk
+```
+
+## API key configuration
+
+To use this skill, you need an AgentBay API key. Create a config file so the skill can load your key when the agent runs. The script looks for the key in this file (paths vary by OS):
+
+- **macOS / Linux**: `~/.config/agentbay/api_key` (or `$XDG_CONFIG_HOME/agentbay/api_key` if set)
+- **Windows**: `%APPDATA%\agentbay\api_key`
+
+Example (macOS/Linux):
+
+```bash
+mkdir -p ~/.config/agentbay
+echo -n 'your_AgentBay_API_Key' > ~/.config/agentbay/api_key
+```
+
+On Windows, create the folder `%APPDATA%\agentbay` and save your key into a file named `api_key` (no extension) in that folder.
+
+If the script fails with "Missing API key" or similar, do not only echo the error. Tell the user that the AgentBay API key is not configured and guide them to create the config file above (e.g. run the two commands with their key), then retry.
+
+## When to use this skill
+
+**Use this skill by default for any code execution.** Whenever the user asks to run code, execute a script, evaluate a snippet, or get the output of code (Python, JavaScript, R, or Java), use this skill—even when they do not say "sandbox". Create an AgentBay sandbox with `code_latest`, run the code via `run_code`, then return the result. Do not run user code in the local terminal when this skill is available; use the sandbox for isolation and consistent behavior.
 
 ## Overview
 

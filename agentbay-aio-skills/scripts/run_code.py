@@ -8,6 +8,30 @@ import sys
 from agentbay import AsyncAgentBay, CreateSessionParams
 
 
+def _api_key_config_path() -> str:
+    """Return the API key config file path for the current platform."""
+    home = os.path.expanduser("~")
+    if sys.platform == "win32":
+        # Windows: %APPDATA%\agentbay\api_key
+        base = os.environ.get("APPDATA", home)
+        return os.path.join(base, "agentbay", "api_key")
+    # Unix-like: $XDG_CONFIG_HOME/agentbay/api_key or ~/.config/agentbay/api_key
+    xdg = os.environ.get("XDG_CONFIG_HOME") or os.path.join(home, ".config")
+    return os.path.join(xdg, "agentbay", "api_key")
+
+
+def _read_api_key_from_config() -> str:
+    """Read API key from config file if present. Returns empty string if not found or on error."""
+    path = _api_key_config_path()
+    try:
+        if os.path.isfile(path):
+            with open(path, "r", encoding="utf-8") as f:
+                return (f.read() or "").strip()
+    except OSError:
+        pass
+    return ""
+
+
 def _load_code(args: argparse.Namespace) -> str:
     if args.code and args.code_file:
         raise ValueError("Use only one of --code or --code-file.")
@@ -50,7 +74,13 @@ async def main() -> int:
     args = parser.parse_args()
 
     if not args.api_key:
-        print("Missing API key. Provide --api-key or set AGENTBAY_API_KEY.", file=sys.stderr)
+        args.api_key = _read_api_key_from_config()
+    if not args.api_key:
+        path = _api_key_config_path()
+        print(
+            f"Missing API key. Create a config file at {path} or set AGENTBAY_API_KEY.",
+            file=sys.stderr,
+        )
         return 2
 
     try:
