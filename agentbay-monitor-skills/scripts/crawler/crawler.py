@@ -79,10 +79,9 @@ class SocialMediaCrawler:
         # 执行爬取任务
         result = await self.adapter.execute_crawl_task(prompt, timeout)
 
-        if not result.get("success"):
-            return result
-
         # 任务结束后从会话文件系统读取 /tmp/results.json（支持 JSON 数组或 JSON Lines）
+        # 即使任务被标记为 success: false（如 Agent 因未满 30 条调用了 done(success: false)），
+        # 仍尝试读取文件，若有数据则视为部分成功，避免丢弃已抓取内容
         results_from_file = None
         if self.adapter.session:
             try:
@@ -92,17 +91,29 @@ class SocialMediaCrawler:
                     raw = (file_result.content or "").strip()
                     if raw:
                         try:
-                            # 兼容：若为 JSON 数组（以 [ 开头）则直接解析；否则按 JSON Lines 逐行解析
-                            if raw.startswith("["):
+                            # 兼容多种格式：
+                            # 1) 整份为 JSON 数组 [ ... ]
+                            if raw.strip().startswith("["):
                                 results_from_file = json.loads(raw)
                                 if not isinstance(results_from_file, list):
                                     results_from_file = None
                             else:
+                                lines = [ln.strip() for ln in raw.split("\n") if ln.strip()]
                                 results_from_file = []
-                                for line in raw.split("\n"):
-                                    line = line.strip()
-                                    if line:
-                                        results_from_file.append(json.loads(line))
+                                # 2) 首行为 Agent 写的 header（以 "results":[ 结尾），其余每行一条 result JSON
+                                if lines and lines[0].rstrip().endswith('"results":['):
+                                    for line in lines[1:]:
+                                        try:
+                                            results_from_file.append(json.loads(line))
+                                        except json.JSONDecodeError:
+                                            pass
+                                else:
+                                    # 3) 纯 JSONL：每行一条完整 JSON
+                                    for line in lines:
+                                        try:
+                                            results_from_file.append(json.loads(line))
+                                        except json.JSONDecodeError:
+                                            pass
                             if results_from_file is not None:
                                 print(f"📄 已读取 /tmp/results.json，共 {len(results_from_file)} 条结果")
                         except json.JSONDecodeError as e:
@@ -115,6 +126,14 @@ class SocialMediaCrawler:
                     print(f"⚠️ 读取 /tmp/results.json 失败: {getattr(file_result, 'error_message', 'unknown')}")
             except Exception as e:
                 print(f"⚠️ 读取 /tmp/results.json 异常: {e}，将使用任务返回结果")
+
+        # 若任务标记为失败且未从文件读到任何结果，则直接返回失败
+        if not result.get("success") and not (
+            results_from_file is not None
+            and isinstance(results_from_file, list)
+            and len(results_from_file) > 0
+        ):
+            return result
 
         # 解析结果
         task_result = result.get("result", {})

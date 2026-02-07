@@ -79,6 +79,22 @@ def get_bing_search_prompt_template() -> str:
     return template
 
 
+def get_baidu_search_prompt_template() -> str:
+    """
+    获取百度搜索提示词模板
+
+    Returns:
+        百度搜索提示词模板字符串
+    """
+    prompts = _load_prompts()
+    template = prompts.get("baidu_search_prompt_template")
+
+    if not template:
+        raise ValueError("未找到 baidu_search_prompt_template 提示词模板")
+
+    return template
+
+
 def build_search_prompt(
     platform_name: str,
     keyword: str,
@@ -96,13 +112,15 @@ def build_search_prompt(
         base_url: 平台基础URL
         search_url: 构造好的搜索URL（已包含关键词）
         max_results: 最大结果数
-        platform_id: 平台标识，为 "bing" 时使用 Bing 专用模板，否则使用社交媒体模板
+        platform_id: 平台标识，为 "bing" 时使用 Bing 模板、"baidu" 时使用百度模板，否则使用社交媒体模板
 
     Returns:
         格式化后的提示词
     """
     if platform_id == "bing":
         template = get_bing_search_prompt_template()
+    elif platform_id == "baidu":
+        template = get_baidu_search_prompt_template()
     else:
         template = get_search_prompt_template()
 

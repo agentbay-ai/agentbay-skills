@@ -204,8 +204,8 @@ def _parse_args():
         description="舆情爬取：除 AGENTBAY_API_KEY 外，其余参数由主 Agent 传入；情感分析由主 Agent 完成。",
     )
     parser.add_argument("--keywords", "-k", required=True, help="关键词，多个用逗号分隔")
-    parser.add_argument("--platform", "-p", default="bing", help="平台: xhs/weibo/douyin/zhihu/bing")
-    parser.add_argument("--max-results", type=int, default=6, help="每关键词最大结果数（默认6）")
+    parser.add_argument("--platform", "-p", default="baidu", help="平台: baidu/xhs/weibo/douyin/zhihu/bing（默认 baidu）")
+    parser.add_argument("--max-results", type=int, default=10, help="每关键词最大结果数（默认10）")
     parser.add_argument("--output-dir", "-o", default="output", help="报告输出目录")
     parser.add_argument("--report-title", help="报告标题（可选）")
     parser.add_argument("--context-name", default="sentiment-analysis", help="Browser Context 名称")

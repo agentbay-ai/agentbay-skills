@@ -55,6 +55,10 @@ class PlatformConfig:
             # Bing 搜索 URL 格式
             encoded_keyword = urlencode({"q": keyword}, encoding="utf-8")
             return f"{self.search_url}?{encoded_keyword}"
+        elif self.name == "baidu":
+            # 百度资讯搜索 URL 格式：rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&word=关键词
+            encoded_keyword = urlencode({"word": keyword}, encoding="utf-8")
+            return f"{self.search_url}?rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&{encoded_keyword}"
         else:
             # 默认格式：使用 keyword 参数
             encoded_keyword = urlencode({"keyword": keyword}, encoding="utf-8")
@@ -124,6 +128,19 @@ PLATFORM_CONFIGS = {
         search_button_text=["搜索", "Search"],
         content_selector="li.b_algo",
         title_selector="h2 a",
+        author_selector=None,
+        time_selector=None
+    ),
+
+    "baidu": PlatformConfig(
+        name="baidu",
+        display_name="百度",
+        base_url="https://www.baidu.com",
+        search_url="https://www.baidu.com/s",
+        search_box_selector="input[name='wd']",
+        search_button_text=["百度一下", "搜索"],
+        content_selector=".result-op, .c-container",
+        title_selector="h3 a, .c-title a",
         author_selector=None,
         time_selector=None
     ),
