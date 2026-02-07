@@ -1,0 +1,117 @@
+# 爬取提示词模板
+# search_prompt_template: 社交媒体（小红书、微博、抖音、知乎等）
+# bing_search_prompt_template: 搜索引擎（Bing）
+
+# 社交媒体：进详情页点封面图，从详情页提取
+search_prompt_template: |
+  在{platform_name}平台搜索关键词"{keyword}"并爬取内容。
+
+  **执行步骤**：
+
+  1. 使用 `go_to_url` 直接跳转到：{search_url}
+  2. 等待 5-10 秒，确认页面加载完成（搜索结果列表）
+
+  3. 滚动加载更多结果，确保有至少 {max_results} 条可提取
+
+  4. **循环提取每条结果**（处理满 {max_results} 条即退出）：
+     - 对每条结果：在列表页**点击该条结果的封面图（图片）**进入详情页（用 `click_element_by_index` 点图片，勿点标题）
+     - 等待详情页加载（3-5秒），从当前页面 DOM/可访问性树直接提取：title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type
+     - 勿为评论去点「点击评论」；无评论则 comment_list 填 []、comments 填 0/null
+     - **立即**用 `write_file` 写入本条：第一条 append=false 写第一行，之后每条 append=true 追加一行（JSON Lines 单行 JSON）
+     - 返回列表页（后退或跳回 {search_url}）后再处理下一条
+
+  5. **结果写入**（单条即写，可扩展追加）：
+     - 结果文件：`/tmp/results.json` 使用 **JSON Lines 格式**（每行一个 JSON 对象）
+     - **必须每提取完一条就立即写入**：提取第一条后**马上** `write_file` 写第一行（append=false）；返回列表处理第二条，提取第二条后**马上** `write_file` 追加一行（append=true）；依此类推。**禁止**等全部提取完再一次性写入。
+     - 第一条：`write_file` 内容为本条单行 JSON；之后每条：`write_file` 用 append=true，内容为本条单行 JSON。无需 read_file。
+     - 任务结束后系统会按行解析该文件得到结果列表
+
+  6. **结束**：写完第 {max_results} 条并执行 `write_file` 后，**任务即完成**。**立即**调用 `done` 结束，不要调用 summary_info、不要 read_file 验证、不要做任何汇总或校验步骤。
+
+  **输出 JSON 格式**
+  {{
+      "success": true,
+      "platform": "{platform_name}",
+      "keyword": "{keyword}",
+      "total_count": 实际数量,
+      "results": [
+          {{
+              "title": "标题",
+              "content": "正文",
+              "author": "作者",
+              "publish_time": "2024-01-01 12:00:00",
+              "likes": 100,
+              "shares": 50,
+              "comments": 20,
+              "comment_list": [],
+              "url": "链接",
+              "content_type": "类型"
+          }}
+      ]
+  }}
+
+  **重要**：
+  - 直接跳转 {search_url}，不要点搜索框
+  - 进详情一律**点封面图**（不点标题），从详情页提取
+  - **每提取完一条就立即 write_file**（第一条 append=false，之后每条 append=true），禁止最后才一次性写入
+  - **写完第 {max_results} 条后立即 done 结束**，不要 summary_info、不要 read_file 验证
+  - 严格只处理 {max_results} 条，无法获取的字段用 null/空字符串
+  - 关键词："{keyword}"
+
+# 搜索引擎（Bing）：仅从「资讯」板块列表页提取，不点击进入任何链接（如官网、文章页）
+bing_search_prompt_template: |
+  在 Bing 搜索关键词"{keyword}"，**仅爬取「资讯」板块**的搜索结果，且**不要点击进入任何链接**（如千问官网、文章详情页等）。
+
+  **执行步骤**：
+
+  1. 使用 `go_to_url` 直接跳转到：{search_url}
+  2. 等待 5-10 秒，确认页面加载完成（综合搜索结果页）
+
+  3. **切换到「资讯」板块**：
+     - 在页面上找到并点击「资讯」「新闻」或 "News" 选项卡/筛选项，使当前展示的为资讯类结果
+     - 若当前已是资讯视图或无明显选项卡，则继续在现有列表中**只选取资讯类条目**（新闻、报道、评测等），跳过官网、下载页、百科等
+  4. 在资讯列表区域滚动加载更多，确保有至少 {max_results} 条可提取
+
+  5. **仅在列表页提取，禁止点击进入任何链接**：
+     - **不要点击**任何结果的标题或链接（不进入千问官网、不打开文章页、不打开任何目标页）
+     - 在**当前搜索结果列表页**，对每条资讯类结果（通常为带标题、摘要、链接的卡片或列表项）：从 DOM/可访问性树直接读取该条在列表中的**标题**、**摘要/描述（即 content，尽量完整摘录列表页所见全文，建议不少于 500 字；若列表仅显示短摘要则写全所见）**、**链接（url）**
+     - 作者、发布时间、点赞/评论等若列表有则提取，否则填 null 或 []；content_type 填 "news" 或 "资讯"
+     - **每从列表页提取完一条就立即**用 `write_file` 写入：第一条 append=false 写第一行，之后每条 append=true 追加一行（JSON Lines 单行 JSON）
+
+  6. **结果写入**（单条即写）：
+     - 结果文件：`/tmp/results.json` 使用 **JSON Lines 格式**（每行一个 JSON 对象）
+     - **必须每提取完一条就立即写入**：在列表页提取第一条后**马上** `write_file` 写第一行（append=false）；再在列表页提取第二条，**马上** `write_file` 追加一行（append=true）；依此类推。**禁止**等全部提取完再一次性写入。**禁止**点击进入任何链接后再提取。
+     - 任务结束后系统会按行解析该文件得到结果列表
+
+  7. **结束**：写完第 {max_results} 条并执行 `write_file` 后，**任务即完成**。**立即**调用 `done` 结束，不要 summary_info、不要 read_file 验证、不要做任何汇总或校验步骤。
+
+  **输出 JSON 格式**（与其它平台一致，便于后续情感分析）：
+  {{
+      "success": true,
+      "platform": "bing",
+      "keyword": "{keyword}",
+      "total_count": 实际数量,
+      "results": [
+          {{
+              "title": "标题",
+              "content": "摘要/描述（列表页所见，尽量完整摘录，建议不少于 500 字）",
+              "author": null,
+              "publish_time": null,
+              "likes": null,
+              "shares": null,
+              "comments": null,
+              "comment_list": [],
+              "url": "链接",
+              "content_type": "news"
+          }}
+      ]
+  }}
+
+  **重要**：
+  - 直接跳转 {search_url}，不要点搜索框
+  - **优先使用「资讯」/「新闻」板块**，只取资讯类结果，跳过官网、下载站等
+  - **严禁点击任何结果的标题或链接**：不进入千问官网、不打开文章页；**仅在搜索结果列表页**根据每条卡片的标题、摘要、链接直接提取并写入
+  - **每提取完一条就立即 write_file**（第一条 append=false，之后 append=true），禁止最后才一次性写入
+  - **写完第 {max_results} 条后立即 done 结束**，不要 summary_info、不要 read_file 验证、不要做汇总
+  - 严格只处理 {max_results} 条，无法获取的字段用 null/空字符串
+  - 关键词："{keyword}"
