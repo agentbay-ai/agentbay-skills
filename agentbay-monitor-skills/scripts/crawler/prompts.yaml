@@ -1,0 +1,51 @@
+# 爬取提示词模板
+# search_prompt_template: 社交媒体（小红书、微博、抖音、知乎等）
+# bing_search_prompt_template: 搜索引擎（Bing）
+
+# 社交媒体：进详情页点封面图，从详情页提取
+search_prompt_template: |
+  在{platform_name}平台搜索关键词"{keyword}"并爬取内容。
+
+  **步骤**：
+  1. `go_to_url` 跳转 {search_url}，等待 5-10 秒页面加载。
+  2. 滚动加载更多结果，确保至少 {max_results} 条可提取。
+  3. **循环提取**（满 {max_results} 条即停）：
+     - 在列表页**点击该条封面图**（勿点标题）进详情页，等待 3-5 秒；
+     - 从详情页 DOM 提取：title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type（无评论则 comment_list=[]、comments=null）；
+     - **立即** `write_file` 写入 `/tmp/results.json`：第一条 append=false，之后 append=true，每行一条 JSON；禁止全部写完再一次性写入；
+     - 返回列表页再处理下一条。
+  4. 写完第 {max_results} 条后**立即 `done`**，不要 summary_info、read_file 或汇总。
+
+  **输出**：每条 JSON 含 title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type；整体 success、platform、keyword、total_count、results[]。
+
+  **约束**：直接跳转不点搜索框；进详情只点封面图；严格 {max_results} 条；缺字段填 null/空；关键词 "{keyword}"。
+
+# 搜索引擎（Bing）：仅列表页提取资讯，不点进任何链接；不足条数不重试，能抓几条就几条。
+bing_search_prompt_template: |
+  在 Bing 搜索"{keyword}"，**仅爬取资讯类**结果，**不点击任何链接**（不进文章页、不点「资讯」选项卡——该选项卡会跳转 MSN，导致无法在 Bing 列表页提取）。
+
+  **步骤**：
+  1. `go_to_url` 跳转 {search_url}，等待 5-10 秒。
+  2. **在当前 Bing 列表页**识别资讯类条目（带来源如光明网/新华网/XX 新闻及「X小时前」等时间戳的卡片），跳过官网、百科、广告。最多 {max_results} 条；若当前屏不足可滚动 1～2 屏，**仍不足则能抓几条就几条，抓完即结束，不要为凑满而反复滚动**。
+  3. **仅在列表页**从 DOM 读取每条卡片的标题、摘要(content)、链接(url)，以及若有则 author、publish_time；无则 null/[]；content_type 填 "news"。**每提取一条立即** `write_file` 写入 `/tmp/results.json`：第一条 append=false，之后 append=true，每行一条 JSON；禁止点进链接后提取、禁止全部写完再写文件。
+  4. 抓完当前能抓到的所有资讯条（最多 {max_results} 条）后**立即 `done`**（例如只有 3 条就写 3 条后 done）。不要 summary_info、read_file 或汇总。
+
+  **输出**：每条 JSON 含 title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type；整体 success、platform="bing"、keyword、total_count、results[]。
+
+  **约束**：直接跳转不点搜索框；不点「资讯/新闻」选项卡；不点任何结果标题或链接；能抓几条就几条，抓完即 done；缺字段填 null；关键词 "{keyword}"。
+
+# 搜索引擎（百度）：仅列表页提取资讯，不点进任何链接；资讯 URL 为 tn=news；支持翻页以凑满 max_results。
+# 提取方式：从 DOM（Interactive elements）直接提取，禁止 extract_structured_data，避免页面内容被截断（约3000字）导致失败。
+baidu_search_prompt_template: |
+  在百度搜索"{keyword}"，**仅爬取资讯类**结果，**不点击任何结果标题/链接**（不进文章页）。
+
+  **步骤**：
+  1. `go_to_url` 跳转 {search_url}（该 URL 已为资讯搜索 tn=news），等待 5-10 秒。
+  2. **在当前百度列表页**识别资讯类条目（带来源、时间戳的卡片），跳过官网、百科、广告。目标 **{max_results} 条**：若当前屏不足可先滚动 1～2 屏；**若本页抓完后仍不足 {max_results} 条，须点击页面底部的「下一页」翻页**，在新一页继续抓取，直至已抓满 {max_results} 条或没有「下一页」为止。**翻页前必须先把当前页所有已识别的资讯条全部写入 /tmp/results.json，否则下一页会覆盖或漏掉本页数据。**
+  3. **提取方式（必读）**：**禁止使用 extract_structured_data**。请**仅根据当前步骤上下文中已有的「Interactive elements」**（即当前页面 DOM 的可交互元素列表，带索引 [N] 和文本）识别每条资讯卡片，从中解析出：标题(title)、链接(url)、来源(author)、发布时间(publish_time)、摘要(content)。每解析出一条就**立即**用 `write_file` 写入 `/tmp/results.json`：**只写每条资讯的 JSON 对象**，第一条 append=false（写入第一行），之后 append=true（每行追加一条）。**不要写** `{"platform":...}` 或 `"results":[` 等头部，文件内容应为「每行一条完整 JSON 对象」。当前页能识别的资讯全部写完后，再点击「下一页」；翻页后同样从新页的 Interactive elements 中逐条解析并立即 write_file。缺的字段填 null；likes、shares、comments、comment_list 无则 null/[]；content_type 填 "资讯"。
+  4. 抓满 {max_results} 条或已无更多页/更多条后**立即 `done`**。不要 summary_info、read_file 或汇总。
+  **重要**：无论抓满 {max_results} 条还是「已无更多页/搜索结果总量不足」而提前结束，**都必须**调用 `done(success: true, data=...)`，在 data.result 中说明「共抓取 N 条」即可。只有真正执行出错才用 success: false。
+
+  **输出**：每条 JSON 含 title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type；整体 success、platform="baidu"、keyword、total_count、results[]。
+
+  **约束**：直接跳转不点搜索框；不点任何结果标题或链接；**先写满当前页再翻页**；**仅从 DOM（Interactive elements）提取，禁止调用 extract_structured_data**；缺字段填 null；关键词 "{keyword}"。

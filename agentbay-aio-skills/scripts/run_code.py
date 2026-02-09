@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import argparse
 import asyncio
+import base64
 import json
 import os
 import sys
+import time
 
 from agentbay import AsyncAgentBay, CreateSessionParams
 
@@ -78,7 +80,10 @@ async def main() -> int:
     if not args.api_key:
         path = _api_key_config_path()
         print(
-            f"Missing API key. Create a config file at {path} or set AGENTBAY_API_KEY.",
+            f"Missing API key. Apply for an API key at the AgentBay console:\n"
+            f"  https://agentbay.console.aliyun.com/service-management\n"
+            f"Then save it to the local config file: {path}\n"
+            f"(Alternatively, set the AGENTBAY_API_KEY environment variable.)",
             file=sys.stderr,
         )
         return 2
@@ -109,6 +114,65 @@ async def main() -> int:
             print(json.dumps(payload, ensure_ascii=True))
         else:
             if code_result.success:
+                # Check for rich output in results
+                if hasattr(code_result, 'results') and code_result.results:
+                    for res in code_result.results:
+                        # Handle Images (PNG, JPEG, SVG)
+                        img_data = None
+                        ext = ""
+                        if hasattr(res, 'png') and res.png:
+                            img_data = res.png
+                            ext = "png"
+                        elif hasattr(res, 'jpeg') and res.jpeg:
+                            img_data = res.jpeg
+                            ext = "jpg"
+                        elif hasattr(res, 'svg') and res.svg:
+                            img_data = res.svg
+                            ext = "svg"
+
+                        if img_data:
+                            try:
+                                timestamp = int(time.time())
+                                filename = f"chart_{timestamp}.{ext}"
+                                if ext == "svg":
+                                    with open(filename, "w", encoding="utf-8") as f:
+                                        f.write(img_data)
+                                    print(f"Successfully saved {filename}")
+                                else:
+                                    if isinstance(img_data, str):
+                                        img_bytes = base64.b64decode(img_data)
+                                    else:
+                                        img_bytes = img_data
+                                    with open(filename, "wb") as f:
+                                        f.write(img_bytes)
+                                    print(f"Successfully saved {filename} ({len(img_bytes)} bytes)")
+                            except Exception as e:
+                                print(f"Error saving image: {e}", file=sys.stderr)
+
+                        # Handle HTML
+                        if hasattr(res, 'html') and res.html:
+                            print(f"\n[HTML Output]:\n{res.html}")
+
+                        # Handle Markdown
+                        if hasattr(res, 'markdown') and res.markdown:
+                            print(f"\n[Markdown Output]:\n{res.markdown}")
+
+                        # Handle LaTeX
+                        if hasattr(res, 'latex') and res.latex:
+                            print(f"\n[LaTeX Output]:\n{res.latex}")
+
+                        # Handle JSON
+                        if hasattr(res, 'json') and res.json:
+                            print(f"\n[JSON Output]:\n{json.dumps(res.json, indent=2)}")
+
+                        # Handle Chart Data
+                        if hasattr(res, 'chart') and res.chart:
+                            print(f"\n[Chart Data]:\n{json.dumps(res.chart, indent=2)}")
+
+                        # Handle Text (if not main result, to avoid duplication)
+                        if hasattr(res, 'text') and res.text and not getattr(res, 'is_main_result', False):
+                             print(f"\n[Text Output]:\n{res.text}")
+
                 if code_result.result:
                     print(code_result.result)
                 if code_result.logs.stdout:
