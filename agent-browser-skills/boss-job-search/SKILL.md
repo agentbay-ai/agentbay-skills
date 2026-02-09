@@ -2,7 +2,7 @@
 name: boss-job-search
 description: 查询Boss直聘职位信息。当用户想要搜索Boss直聘上的职位、筛选特定公司规模的岗位时使用此skill。
 installation: |
-  python -m pip install wuying-agentbay-sdk
+  python3 -m pip install wuying-agentbay-sdk
 ---
 
 # Boss直聘职位搜索
@@ -12,7 +12,7 @@ installation: |
 在使用此技能之前,请确保已安装必要的依赖包:
 
 ```bash
-python -m pip install wuying-agentbay-sdk
+python3 -m pip install wuying-agentbay-sdk
 ```
 
 ## 使用场景
@@ -25,14 +25,14 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python scripts/browser-use.py "<任务执行步骤>"
+python3 scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ### 示例1:搜索AI Infra工程师职位(公司规模10000人以上)
 ```bash
-python scripts/browser-use.py " \
+python3 scripts/browser-use.py " \
 1. 前往Boss直聘网站 https://www.zhipin.com/ \
 2. 等待页面加载完成,确认首页搜索框及导航栏显示正常 \
 3. 定位顶部职位搜索框,输入关键词'AI Infra工程师' \
@@ -48,7 +48,7 @@ python scripts/browser-use.py " \
 
 ### 示例2:搜索Python工程师职位(不限公司规模)
 ```bash
-python scripts/browser-use.py " \
+python3 scripts/browser-use.py " \
 1. 访问Boss直聘 https://www.zhipin.com/ \
 2. 在搜索框中输入'Python工程师' \
 3. 点击搜索进入职位列表页 \
@@ -59,7 +59,7 @@ python scripts/browser-use.py " \
 
 ### 示例3:搜索产品经理职位(筛选薪资和经验)
 ```bash
-python scripts/browser-use.py " \
+python3 scripts/browser-use.py " \
 1. 打开Boss直聘网站 https://www.zhipin.com/ \
 2. 搜索'产品经理' \
 3. 在筛选栏中选择薪资范围'20-40K' \

@@ -2,7 +2,7 @@
 name: weibo-hot-search
 description: 查询微博热搜信息。当用户想要查询微博热搜榜、文娱热搜、热度排行时使用此skill。
 installation: |
-  python -m pip install wuying-agentbay-sdk
+  python3 -m pip install wuying-agentbay-sdk
 ---
 
 # 微博热搜查询
@@ -12,7 +12,7 @@ installation: |
 在使用此技能之前，请确保已安装必要的依赖包：
 
 ```bash
-python -m pip install wuying-agentbay-sdk
+python3 -m pip install wuying-agentbay-sdk
 ```
 
 ## 使用场景
@@ -24,13 +24,13 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python scripts/browser-use.py "<任务执行步骤>"
+python3 scripts/browser-use.py "<任务执行步骤>"
 ```
 
 ## 快速示例
 
 ```bash
-python scripts/browser-use.py " \
+python3 scripts/browser-use.py " \
 1. 前往微博网站 https://weibo.com/ \
 2. 点击左侧菜单中的微博热搜下的文娱分类 \
 3. 你需要提取榜单中前十条热搜消息 \

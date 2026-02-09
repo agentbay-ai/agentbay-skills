@@ -2,7 +2,7 @@
 name: douban-movie-review
 description: 查询豆瓣电影热门影评信息。当用户想要查询某部电影的豆瓣影评、用户评价、热门短评时使用此skill。
 installation: |
- python -m  pip install wuying-agentbay-sdk
+ python3 -m  pip install wuying-agentbay-sdk
 ---
 
 # 豆瓣电影影评查询
@@ -12,7 +12,7 @@ installation: |
 在使用此技能之前，请确保已安装必要的依赖包：
 
 ```bash
-python -m pip install wuying-agentbay-sdk
+python3 -m pip install wuying-agentbay-sdk
 ```
 
 ## 使用场景
@@ -24,12 +24,12 @@ python -m pip install wuying-agentbay-sdk
 ## 使用方法
 
 ```bash
-python scripts/browser-use.py "<任务执行步骤>"
+python3 scripts/browser-use.py "<任务执行步骤>"
 
 ```
 
 ## 快速示例
-python scripts/browser-use.py " \
+python3 scripts/browser-use.py " \
 1. 前往豆瓣网站https://www.douban.com/ \
 2. 搜索电影盗梦空间 \
 3. 点击盗梦空间进入详情界面,下滑到短评部分 \
@@ -52,6 +52,6 @@ python scripts/browser-use.py " \
 ## 注意事项
 
 - 始终注明信息来源为豆瓣
-- 不需要创建新的脚本，用skill目录下的browseer-use.py
+- 不需要创建新的脚本，用skill目录下的browser-use.py
 - 任务需要执行1~2分钟，不要杀进程，请耐心等待和观察任务，也不要重试
 - skill调用后，控制台会打印出asp流化链接（可视化的url），可告知用户查看
