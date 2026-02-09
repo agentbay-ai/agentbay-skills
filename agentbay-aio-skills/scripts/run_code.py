@@ -14,9 +14,9 @@ def _api_key_config_path() -> str:
     """Return the API key config file path for the current platform."""
     home = os.path.expanduser("~")
     if sys.platform == "win32":
-        # Windows: %APPDATA%\agentbay\api_key
-        base = os.environ.get("APPDATA", home)
-        return os.path.join(base, "agentbay", "api_key")
+        # Windows: %USERPROFILE%\.config\agentbay\api_key
+        base = os.environ.get("USERPROFILE", home)
+        return os.path.join(base, ".config", "agentbay", "api_key")
     # Unix-like: $XDG_CONFIG_HOME/agentbay/api_key or ~/.config/agentbay/api_key
     xdg = os.environ.get("XDG_CONFIG_HOME") or os.path.join(home, ".config")
     return os.path.join(xdg, "agentbay", "api_key")

@@ -50,8 +50,8 @@ dependencies:
 1. 到 [AgentBay 控制台](https://agentbay.console.aliyun.com/service-management) 申请 API Key。
 2. 在本地创建配置文件（脚本会从该路径读取）：
    - **macOS / Linux**：`~/.config/agentbay/api_key`（或 `$XDG_CONFIG_HOME/agentbay/api_key`）
-   - **Windows**：`%APPDATA%\agentbay\api_key`
-3. 示例（macOS/Linux）：`mkdir -p ~/.config/agentbay`，再将密钥写入 `~/.config/agentbay/api_key`。Windows：在 `%APPDATA%\agentbay` 下创建名为 `api_key` 的无扩展名文件。
+   - **Windows**：`%USERPROFILE%\.config\agentbay\api_key`
+3. 示例（macOS/Linux）：`mkdir -p ~/.config/agentbay`，再将密钥写入 `~/.config/agentbay/api_key`。Windows：在 `%USERPROFILE%\.config\agentbay` 下创建名为 `api_key` 的无扩展名文件。
 4. 告知用户完成后重试，不要只复述报错。
 
 ## 使用场景

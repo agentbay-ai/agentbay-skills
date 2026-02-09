@@ -22,7 +22,7 @@ A collection of skills for [AgentBay](https://github.com/agentbay-ai), enabling 
 Create a config file so the skill can load your key:
 
 - **macOS / Linux**: `~/.config/agentbay/api_key`
-- **Windows**: `%APPDATA%\agentbay\api_key`
+- **Windows**: `%USERPROFILE%\.config\agentbay\api_key`
 
 Example (macOS/Linux):
 

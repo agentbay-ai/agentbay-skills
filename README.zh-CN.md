@@ -22,7 +22,7 @@
 在本地创建配置文件以便技能加载密钥：
 
 - **macOS / Linux**：`~/.config/agentbay/api_key`
-- **Windows**：`%APPDATA%\agentbay\api_key`
+- **Windows**：`%USERPROFILE%\.config\agentbay\api_key`
 
 示例（macOS/Linux）：
 
