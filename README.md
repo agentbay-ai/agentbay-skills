@@ -2,69 +2,36 @@
 
 **English** | [中文](./README.zh-CN.md)
 
-A collection of skills for [AgentBay](https://github.com/agentbay-ai), enabling agents to run code, use tools, and integrate with external services in a sandboxed environment.
+A collection of skills for [AgentBay](https://github.com/agentbay-ai), enabling agents to run code, use browser automation, monitor sentiment, and integrate with external services in a sandboxed environment.
 
 ## What's inside
 
 | Skill | Description |
 |-------|-------------|
-| **agentbay-aio-skills** | Run or execute code (Python, JavaScript, R, Java) in an AgentBay sandbox. Triggered by phrases like "run this code", "execute this script", "帮我跑一下这段代码", etc. No need for the user to say "sandbox". |
+| agentbay-aio-skills | Run or execute code (Python, JavaScript, R, Java) in an AgentBay sandbox. Triggered by "run this code", "execute this script", "帮我跑一下这段代码", etc. No need for the user to say "sandbox". |
+| agent-browser-skills / boss-job-search | Search job postings on Boss直聘 (positions, company size filters). |
+| agent-browser-skills / douban-movie-review | Query Douban movie reviews and ratings for a given film. |
+| agent-browser-skills / moltbook-hot-posts | Query Moltbook (Agent community) hot posts and discussions. |
+| agent-browser-skills / weibo-hot-search | Query Weibo hot search / trending topics. |
+| agent-browser-skills / wuying-browser-use | Browser automation for testing, form filling, screenshots, and data extraction. |
+| agentbay-monitor-skills | Sentiment/sentiment monitoring: crawl → sentiment analysis → generate report (Markdown/PDF). Triggered by "舆情分析", "舆情报告", etc. |
+| find-skills | Discover, search and install agent skills from the marketplace. Use when the user wants to find a skill, install a capability, or look for sandbox-related skills. Triggered by "查找插件", "搜索技能", "install skill", "find a skill for X", etc. |
 
-## Quick start
-
-### Prerequisites
-
-- [wuying-agentbay-sdk](https://pypi.org/project/wuying-agentbay-sdk/): `pip install wuying-agentbay-sdk`
-- An AgentBay API key
-
-### API key configuration
-
-Create a config file so the skill can load your key:
-
-- **macOS / Linux**: `~/.config/agentbay/api_key`
-- **Windows**: `%USERPROFILE%\.config\agentbay\api_key`
-
-Example (macOS/Linux):
-
-```bash
-mkdir -p ~/.config/agentbay
-echo -n 'your_AgentBay_API_Key' > ~/.config/agentbay/api_key
-```
-
-### Run code via script
-
-```bash
-cd agentbay-aio-skills
-python scripts/run_code.py --code "print('Hello')" --language python
-```
-
-With a file:
-
-```bash
-python scripts/run_code.py --code-file ./examples/hello.py --language python
-```
-
-### Use in code (SDK)
-
-```python
-from agentbay import AgentBay, CreateSessionParams
-
-agent_bay = AgentBay(api_key="your_api_key")
-result = agent_bay.create(CreateSessionParams(image_id="code_latest"))
-
-code_result = result.session.code.run_code("print('Hello')", "python")
-print(code_result.result)
-result.session.delete()
-```
-
-See [agentbay-aio-skills/SKILL.md](./agentbay-aio-skills/SKILL.md) for full skill documentation, async usage, and result handling.
+Usage and setup: see each skill's `SKILL.md` in its directory.
 
 ## Repository structure
 
 ```
 agentbay-skills/
-├── agentbay-aio-skills/    # Code execution skill (SKILL.md + scripts)
-├── dist/                   # Built .skill packages
+├── agentbay-aio-skills/       # Code execution (SKILL.md + scripts)
+├── agent-browser-skills/      # Browser automation skills
+│   ├── boss-job-search/
+│   ├── douban-movie-review/
+│   ├── moltbook-hot-posts/
+│   ├── weibo-hot-search/
+│   └── wuying-browser-use/
+├── agentbay-monitor-skills/   # Sentiment monitoring & reporting
+├── find-skills/               # Skill marketplace: search & install
 └── README.md
 ```
 
