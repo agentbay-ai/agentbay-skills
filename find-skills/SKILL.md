@@ -64,8 +64,6 @@ The search process uses the Python request module to query the skill marketplace
 
 Convert user's natural language intent into a concise search keyword (maintaining the original language).
 
-**Example Python Search:**
-
 ```python
 from scripts.request import POPRequest
 import json
