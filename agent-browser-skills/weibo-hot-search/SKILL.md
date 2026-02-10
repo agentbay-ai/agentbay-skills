@@ -1,11 +1,17 @@
 ---
 name: weibo-hot-search
 description: 查询微博热搜信息。当用户想要查询微博热搜榜、文娱热搜、热度排行时使用此skill。
-installation: |
-  python3 -m pip install wuying-agentbay-sdk
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # 微博热搜查询
+
+## 依赖
+
+```bash
+python3 -m pip install wuying-agentbay-sdk
+```
 
 ## 安装步骤
 

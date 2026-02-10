@@ -1,11 +1,17 @@
 ---
 name: douban-movie-review
 description: 查询豆瓣电影热门影评信息。当用户想要查询某部电影的豆瓣影评、用户评价、热门短评时使用此skill。
-installation: |
- python3 -m  pip install wuying-agentbay-sdk
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # 豆瓣电影影评查询
+
+## 依赖
+
+```bash
+python3 -m pip install wuying-agentbay-sdk
+```
 
 ## 安装步骤
 

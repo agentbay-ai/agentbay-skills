@@ -1,13 +1,19 @@
 ---
 name: wuying-browser-use
 description: 自动化浏览器交互，用于网页测试、表单填写、截图和数据提取。当用户需要浏览网站、与网页交互或提取信息时使用。
-installation: |
-  python3 -m pip install wuying-agentbay-sdk
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # Wuying Browser Use
 
 自动化浏览器操作，支持网页导航、表单填写、数据提取等任务。
+
+## 依赖
+
+```bash
+python3 -m pip install wuying-agentbay-sdk
+```
 
 ## 使用方法
 

@@ -1,11 +1,17 @@
 ---
 name: moltbook-hot-posts
 description: 查询Moltbook（Agent社区）热门帖子信息。当用户想要查询Agent社区热帖、最新讨论、热门话题时使用此skill。
-installation: |
-  python3 -m pip install wuying-agentbay-sdk
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # Moltbook热帖检索
+
+## 依赖
+
+```bash
+python3 -m pip install wuying-agentbay-sdk
+```
 
 ## 安装步骤
 

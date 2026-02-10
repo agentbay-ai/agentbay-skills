@@ -1,11 +1,17 @@
 ---
 name: boss-job-search
 description: 查询Boss直聘职位信息。当用户想要搜索Boss直聘上的职位、筛选特定公司规模的岗位时使用此skill。
-installation: |
-  python3 -m pip install wuying-agentbay-sdk
+dependencies:
+  - wuying-agentbay-sdk
 ---
 
 # Boss直聘职位搜索
+
+## 依赖
+
+```bash
+python3 -m pip install wuying-agentbay-sdk
+```
 
 ## 安装步骤
 
