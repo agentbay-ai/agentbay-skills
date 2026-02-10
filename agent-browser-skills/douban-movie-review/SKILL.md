@@ -1,8 +1,6 @@
 ---
 name: douban-movie-review
 description: 查询豆瓣电影热门影评信息。当用户想要查询某部电影的豆瓣影评、用户评价、热门短评时使用此skill。
-dependencies:
-  - wuying-agentbay-sdk
 ---
 
 # 豆瓣电影影评查询
@@ -40,7 +38,7 @@ python3 scripts/browser-use.py " \
 2. 搜索电影盗梦空间 \
 3. 点击盗梦空间进入详情界面,下滑到短评部分 \
 4. 提取前5条热门评论 \
-5. 以markdown格式返回 
+5. 以markdown格式返回
 "
 
 

@@ -1,8 +1,6 @@
 ---
 name: agentbay-monitor-skill
 description: 舆情监控技能，最终产出舆情报告。约定：凡「舆情分析」即执行全流程（爬取→情感分析→生成报告）。爬取由本技能完成；情感分析由主 Agent 按提示词自主判断；报告由 generate_report 生成。
-dependencies:
-  - wuying-agentbay-sdk
 ---
 
 # AgentBay 舆情监控 Skill

@@ -1,8 +1,6 @@
 ---
 name: weibo-hot-search
 description: 查询微博热搜信息。当用户想要查询微博热搜榜、文娱热搜、热度排行时使用此skill。
-dependencies:
-  - wuying-agentbay-sdk
 ---
 
 # 微博热搜查询
@@ -40,7 +38,7 @@ python3 scripts/browser-use.py " \
 1. 前往微博网站 https://weibo.com/ \
 2. 点击左侧菜单中的微博热搜下的文娱分类 \
 3. 你需要提取榜单中前十条热搜消息 \
-4. 以markdown格式返回所有符合条件的热搜信息 
+4. 以markdown格式返回所有符合条件的热搜信息
 "
 ```
 
@@ -51,7 +49,7 @@ python3 scripts/browser-use.py " \
 
 ### 热搜列表（热度 ≥ 50000）
 
-1. **话题名称** 
+1. **话题名称**
    - 热度: xxx
    - 排名: #xxx
 

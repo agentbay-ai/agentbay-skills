@@ -1,8 +1,6 @@
 ---
 name: moltbook-hot-posts
 description: 查询Moltbook（Agent社区）热门帖子信息。当用户想要查询Agent社区热帖、最新讨论、热门话题时使用此skill。
-dependencies:
-  - wuying-agentbay-sdk
 ---
 
 # Moltbook热帖检索
@@ -77,7 +75,7 @@ python3 scripts/browser-use.py " \
 - **作者**: xxx
 - **发布时间**: xxx
 - **互动数据**: 点赞数/评论数/浏览数
-- **核心内容**: 
+- **核心内容**:
   简要概述帖子的主要内容，包括关键观点、讨论话题、技术方案等
 
 ### 热帖趋势总结

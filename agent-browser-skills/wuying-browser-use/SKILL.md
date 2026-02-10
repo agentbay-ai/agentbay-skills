@@ -1,8 +1,6 @@
 ---
 name: wuying-browser-use
 description: 自动化浏览器交互，用于网页测试、表单填写、截图和数据提取。当用户需要浏览网站、与网页交互或提取信息时使用。
-dependencies:
-  - wuying-agentbay-sdk
 ---
 
 # Wuying Browser Use
