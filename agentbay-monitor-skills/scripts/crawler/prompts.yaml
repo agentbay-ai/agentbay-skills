@@ -46,6 +46,8 @@ baidu_search_prompt_template: |
   4. 抓满 {max_results} 条或已无更多页/更多条后**立即 `done`**。不要 summary_info、read_file 或汇总。
   **重要**：无论抓满 {max_results} 条还是「已无更多页/搜索结果总量不足」而提前结束，**都必须**调用 `done(success: true, data=...)`，在 data.result 中说明「共抓取 N 条」即可。只有真正执行出错才用 success: false。
 
+  **防止死循环（必读）**：同一批资讯**只写一次**，不要在多步中重复写入相同条目。**一旦在本轮中已经执行过一轮 write_file 且共写入了 {max_results} 条**（即先 1 次 append=false 再 {max_results}-1 次 append=true），**下一步有且仅有一个动作：调用 `done(success: true, data=...)`**，不得再次对同一页或同一批卡片执行 write_file。若你上一步已写入过 {max_results} 条（或任意已达到目标条数），则本步**只允许**调用 done，禁止再写文件。
+
   **输出**：每条 JSON 含 title、content、author、publish_time、likes、shares、comments、comment_list、url、content_type；整体 success、platform="baidu"、keyword、total_count、results[]。
 
   **约束**：直接跳转不点搜索框；不点任何结果标题或链接；**先写满当前页再翻页**；**仅从 DOM（Interactive elements）提取，禁止调用 extract_structured_data**；缺字段填 null；关键词 "{keyword}"。

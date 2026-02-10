@@ -4,9 +4,6 @@
 """
 from dataclasses import dataclass
 from typing import List, Optional
-from urllib.parse import urlencode
-
-
 @dataclass
 class PlatformConfig:
     """平台配置类"""
@@ -34,35 +31,17 @@ class PlatformConfig:
             self.search_button_text = ["搜索", "Search"]
 
     def build_search_url(self, keyword: str) -> str:
-        """
-        构造搜索URL
-
-        Args:
-            keyword: 搜索关键词
-
-        Returns:
-            完整的搜索URL
-        """
+        """构造搜索 URL，关键词直接使用中文（由浏览器在请求时编码）。"""
         if self.name == "xhs":
-            # 小红书搜索URL格式
-            encoded_keyword = urlencode({"keyword": keyword}, encoding="utf-8")
-            return f"{self.search_url}?{encoded_keyword}&source=web_explore_feed"
+            return f"{self.search_url}?keyword={keyword}&source=web_explore_feed"
         elif self.name == "weibo":
-            # 微博搜索URL格式
-            encoded_keyword = urlencode({"q": keyword}, encoding="utf-8")
-            return f"{self.search_url}?{encoded_keyword}"
+            return f"{self.search_url}?q={keyword}"
         elif self.name == "bing":
-            # Bing 搜索 URL 格式
-            encoded_keyword = urlencode({"q": keyword}, encoding="utf-8")
-            return f"{self.search_url}?{encoded_keyword}"
+            return f"{self.search_url}?q={keyword}"
         elif self.name == "baidu":
-            # 百度资讯搜索 URL 格式：rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&word=关键词
-            encoded_keyword = urlencode({"word": keyword}, encoding="utf-8")
-            return f"{self.search_url}?rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&{encoded_keyword}"
+            return f"{self.search_url}?rtt=1&bsst=1&cl=2&tn=news&ie=utf-8&word={keyword}"
         else:
-            # 默认格式：使用 keyword 参数
-            encoded_keyword = urlencode({"keyword": keyword}, encoding="utf-8")
-            return f"{self.search_url}?{encoded_keyword}"
+            return f"{self.search_url}?keyword={keyword}"
 
 
 # 平台配置字典
