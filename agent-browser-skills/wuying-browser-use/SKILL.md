@@ -1,7 +1,8 @@
 ---
 name: wuying-browser-use
-description: Automates browser interactions for web testing, form filling, screenshots, and data extraction. Use when the user needs to navigate websites, interact with web pages, or extract information.
-allowed-tools: Bash(*)
+description: 自动化浏览器交互，用于网页测试、表单填写、截图和数据提取。当用户需要浏览网站、与网页交互或提取信息时使用。
+installation: |
+  python3 -m pip install wuying-agentbay-sdk
 ---
 
 # Wuying Browser Use
@@ -14,21 +15,6 @@ allowed-tools: Bash(*)
 python3 scripts/browser-use.py "<任务执行步骤>"
 ```
 
-## 快速示例
-
-```bash
-# 访问网站
-python3 scripts/browser-use.py "<任务执行步骤>"
-
-# 搜索信息
-python3 scripts/browser-use.py "<任务执行步骤>"
-
-# 提取数据
-python3 scripts/browser-use.py "<任务执行步骤>"
-
-# 填写表单
-python3 scripts/browser-use.py "<任务执行步骤>"
-```
 
 ## 功能特性
 
@@ -43,17 +29,17 @@ python3 scripts/browser-use.py "<任务执行步骤>"
 
 ### 电商信息收集
 ```bash
-python3 scripts/browser-use.py "<任务执行步骤>" "访问京东搜索iPhone，提取前5个商品价格"
+python3 scripts/browser-use.py "访问京东搜索iPhone，提取前5个商品价格"
 ```
 
 ### 新闻监控
 ```bash
-python3 scripts/browser-use.py "<任务执行步骤>" "打开新浪新闻，获取今日头条"
+python3 scripts/browser-use.py "打开新浪新闻，获取今日头条"
 ```
 
 ### 社交媒体
 ```bash
-python3 scripts/browser-use.py "<任务执行步骤>" "访问微博热搜榜，提取前10个话题"
+python3 scripts/browser-use.py "访问微博热搜榜，提取前10个话题"
 ```
 
 ## 使用技巧
