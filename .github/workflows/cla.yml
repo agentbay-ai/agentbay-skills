@@ -26,7 +26,7 @@ jobs:
           # PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://docs.github.com/en/repositories/creating-and-managing-repositories/creating-a-new-repository' # e.g. a CLA or a DCO document
+          path-to-document: 'https://gist.github.com/alibaba-oss/151a13b0a72e44ba471119c7eb737d74' # e.g. a CLA or a DCO document
           # branch should not be protected
           branch: 'main'
           allowlist: user1,bot*
